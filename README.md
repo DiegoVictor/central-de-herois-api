@@ -7,13 +7,15 @@ $ yarn
 Was installed and configured the `eslint` and `prettier` to keep the code clean and patterned.
 
 # Databases
-The application use one databases: MongoDB. For the fastest setup is recommended to use docker, see how to do it below.
-> Windows users using Docker Toolbox, maybe be necessary in your `env` file set the MongoDB' host to `192.168.99.100` (docker machine IP) instead of `localhost` or `127.0.0.1`
+The application use one databases: MongoDB. For the fastest setup is recommended to use docker, see how to do it below. For the fastest setup is recommended to use [docker-compose](https://docs.docker.com/compose/), you just need to up all services:
+```
+$ docker-compose up -d
+```
 
 ## MongoDB
+If for any reason you would like to create a MongoDB container instead of use `docker-compose`, you can do it by running the following command:
 ```
 $ docker run --name iheroes-mongo -d -p 27017:27017 -d mongo
-$ docker start iheroes-mongo
 ```
 
 # .env
@@ -21,7 +23,7 @@ Rename the `.env.example` to `.env` then just update with yours settings.
 
 # Start Up
 ```
-$ yarn dev
+$ yarn dev:server
 ```
 
 # Tests
