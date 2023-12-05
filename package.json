@@ -1,6 +1,7 @@
 {
   "scripts": {
-    "dev": "nodemon src/server.js",
+    "build": "sucrase ./src -d ./dist --transforms imports",
+    "dev:server": "nodemon src/server.js --legacy-watch",
     "test": "jest --runInBand"
   },
   "dependencies": {
