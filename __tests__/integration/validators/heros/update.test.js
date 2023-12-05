@@ -30,7 +30,7 @@ describe('Hero controller', () => {
       .set('Authorization', token)
       .expect(400)
       .send({
-        name: faker.random.number(),
+        name: faker.datatype.number(),
         rank: faker.phone.phoneNumber(),
         status: faker.address.latitude(),
       });

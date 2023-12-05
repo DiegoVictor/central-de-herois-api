@@ -24,7 +24,7 @@ describe('Auth middleware', () => {
   });
 
   it('should not be able to request with a invalid token', async () => {
-    const id = faker.random.number();
+    const id = faker.datatype.number();
     const { body } = await request(app)
       .get('/heros')
       .set(
