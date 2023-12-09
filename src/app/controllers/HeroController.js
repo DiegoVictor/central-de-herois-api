@@ -20,17 +20,30 @@ class HeroController {
     const { name, latitude, longitude, rank, status, description } =
       schema.parse(req.body);
 
-    if (!hero) {
-      hero = await Hero.create({
+    await Hero.findOneAndUpdate(
+      {
+        name,
+      },
+      {
         name,
         location: { type: 'Point', coordinates: [longitude, latitude] },
         rank,
         status,
         description,
-      });
-    }
+      },
+      {
+        upsert: true,
+      }
+    );
 
-    return res.json(hero);
+    return res.json({
+      name,
+      latitude,
+      longitude,
+      rank,
+      status,
+      description,
+    });
   }
 
   async update(req, res) {
