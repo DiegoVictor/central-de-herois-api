@@ -1,3 +1,5 @@
+import { z } from 'zod';
+
 import Hero from '../models/Hero';
 
 class HeroController {
@@ -7,8 +9,16 @@ class HeroController {
   }
 
   async store(req, res) {
-    const { name, latitude, longitude, rank, status, description } = req.body;
-    let hero = await Hero.findOne({ name });
+    const schema = z.object({
+      name: z.string(),
+      latitude: z.string().or(z.number()),
+      longitude: z.string().or(z.number()),
+      rank: z.enum(['S', 'A', 'B', 'C']),
+      status: z.enum(['fighting', 'out_of_combat', 'patrolling', 'resting']),
+    });
+
+    const { name, latitude, longitude, rank, status, description } =
+      schema.parse(req.body);
 
     if (!hero) {
       hero = await Hero.create({
@@ -24,10 +34,19 @@ class HeroController {
   }
 
   async update(req, res) {
-    const { id } = req.params;
-    const { name, latitude, longitude } = req.body;
-    const hero = await Hero.findById(id);
+    const schema = z.object({
+      name: z.string().nullable(),
+      latitude: z.string().or(z.number()).nullable(),
+      longitude: z.string().or(z.number()).nullable(),
+      rank: z.enum(['S', 'A', 'B', 'C']).nullable(),
+      status: z.enum(['fighting', 'out_of_combat', 'patrolling', 'resting'])
+        .nullable,
+    });
 
+    const { id } = req.params;
+    const { name, latitude, longitude } = schema.validate(req.body);
+
+    const hero = await Hero.findById(id);
     if (!hero) {
       return res.status(404).json({
         error: {
