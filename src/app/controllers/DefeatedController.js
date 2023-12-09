@@ -22,10 +22,10 @@ class DefeatedController {
     let found_all_heroes = true;
 
     const result = await Promise.all(heroes);
-    result.every(async hero => {
+    result.every(async (hero) => {
       if (hero) {
         hero.status = req.body.heroes.find(
-          h => h._id === hero._id.toString()
+          (h) => h._id === hero._id.toString()
         ).status;
         await hero.save();
         monster.heroes.push(hero._id);

@@ -3,7 +3,7 @@ import { z } from 'zod';
 import Hero from '../models/Hero';
 
 class HeroController {
-  async index(req, res) {
+  async index(_, res) {
     const heroes = await Hero.find();
     return res.json(heroes);
   }
@@ -82,7 +82,7 @@ class HeroController {
       };
     }
 
-    ['rank', 'status', 'description'].forEach(field => {
+    ['rank', 'status', 'description'].forEach((field) => {
       if (typeof req.body[field] !== 'undefined') {
         hero[field] = req.body[field];
       }
@@ -107,8 +107,8 @@ class HeroController {
 
   async destroy(req, res) {
     const { id } = req.params;
-    const hero = await Hero.findById(id);
 
+    const hero = await Hero.findById(id);
     if (!hero) {
       return res.status(404).json({
         error: {
