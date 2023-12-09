@@ -1,14 +1,14 @@
 import { Router } from 'express';
 
-import HeroController from '../app/controllers/HeroController';
-import HeroStore from '../app/validators/Heroes/Store';
-import HeroUpdate from '../app/validators/Heroes/Update';
+import { HeroController } from '../app/controllers/HeroController';
 
 const app = Router();
 
-app.get('/heroes', HeroController.index);
-app.post('/heroes', HeroStore, HeroController.store);
-app.put('/heroes/:id', HeroUpdate, HeroController.update);
-app.delete('/heroes/:id', HeroController.destroy);
+const heroController = new HeroController();
+
+app.get('/heroes', heroController.index);
+app.post('/heroes', heroController.store);
+app.put('/heroes/:id', heroController.update);
+app.delete('/heroes/:id', heroController.destroy);
 
 export { app as heroes };

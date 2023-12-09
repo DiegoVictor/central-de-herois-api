@@ -93,4 +93,4 @@ class HeroController {
   }
 }
 
-export default new HeroController();
+export { HeroController };

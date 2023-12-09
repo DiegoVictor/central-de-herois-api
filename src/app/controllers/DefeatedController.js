@@ -51,4 +51,4 @@ class DefeatedController {
   }
 }
 
-export default new DefeatedController();
+export { DefeatedController };

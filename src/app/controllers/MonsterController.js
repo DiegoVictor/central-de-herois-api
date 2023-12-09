@@ -25,4 +25,4 @@ class MonsterController {
   }
 }
 
-export default new MonsterController();
+export { MonsterController };
