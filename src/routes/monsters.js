@@ -8,7 +8,7 @@ const app = Router();
 const monsterController = new MonsterController();
 const defeatedController = new DefeatedController();
 
-app.get('/monsters', monsterController.index);
-app.put('/monsters/:id/defeated', defeatedController.update);
+app.get('/', monsterController.index);
+app.put('/:id/defeated', defeatedController.update);
 
 export { app as monsters };
