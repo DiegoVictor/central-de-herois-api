@@ -9,16 +9,16 @@ class HeroController {
   }
 
   async store(req, res) {
-    const schema = z.object({
-      name: z.string(),
-      latitude: z.string().or(z.number()),
-      longitude: z.string().or(z.number()),
-      rank: z.enum(['S', 'A', 'B', 'C']),
-      status: z.enum(['fighting', 'out_of_combat', 'patrolling', 'resting']),
-    });
-
-    const { name, latitude, longitude, rank, status, description } =
-      schema.parse(req.body);
+    const { name, latitude, longitude, rank, status, description } = z
+      .object({
+        name: z.string(),
+        latitude: z.string().or(z.number()),
+        longitude: z.string().or(z.number()),
+        rank: z.enum(['S', 'A', 'B', 'C']),
+        status: z.enum(['fighting', 'out_of_combat', 'patrolling', 'resting']),
+        description: z.string(),
+      })
+      .parse(req.body);
 
     await Hero.findOneAndUpdate(
       {
@@ -47,17 +47,20 @@ class HeroController {
   }
 
   async update(req, res) {
-    const schema = z.object({
-      name: z.string().nullable(),
-      latitude: z.string().or(z.number()).nullable(),
-      longitude: z.string().or(z.number()).nullable(),
-      rank: z.enum(['S', 'A', 'B', 'C']).nullable(),
-      status: z.enum(['fighting', 'out_of_combat', 'patrolling', 'resting'])
-        .nullable,
-    });
+    const { name, latitude, longitude } = z
+      .object({
+        name: z.string().optional(),
+        latitude: z.string().or(z.number()).optional(),
+        longitude: z.string().or(z.number()).optional(),
+        rank: z.enum(['S', 'A', 'B', 'C']).optional(),
+        status: z
+          .enum(['fighting', 'out_of_combat', 'patrolling', 'resting'])
+          .optional(),
+        description: z.string().optional(),
+      })
+      .parse(req.body);
 
     const { id } = req.params;
-    const { name, latitude, longitude } = schema.validate(req.body);
 
     const hero = await Hero.findById(id);
     if (!hero) {
