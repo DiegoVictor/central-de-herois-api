@@ -5,7 +5,7 @@ import helmet from 'helmet';
 
 import './lib/mongoose';
 import { setupWebSocket } from './lib/websocket';
-import routes from './routes';
+import { routes } from './routes';
 
 export const app = express();
 
