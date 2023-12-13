@@ -1,23 +1,23 @@
 import { factory } from 'factory-girl';
-import faker from 'faker';
+import { faker } from '@faker-js/faker';
 
 import Hero from '../../src/app/models/Hero';
 import Monster from '../../src/app/models/Monster';
 import User from '../../src/app/models/User';
 
 factory.define('Hero', Hero, {
-  name: faker.name.firstName,
+  name: faker.person.firstName,
   description: faker.lorem.paragraph,
   location: () => ({
     type: 'Point',
     coordinates: [
-      Number(faker.address.longitude()),
-      Number(faker.address.latitude()),
+      Number(faker.location.longitude()),
+      Number(faker.location.latitude()),
     ],
   }),
-  rank: () => faker.random.arrayElement(['S', 'A', 'B', 'C']),
+  rank: () => faker.helpers.arrayElement(['S', 'A', 'B', 'C']),
   status: () =>
-    faker.random.arrayElement([
+    faker.helpers.arrayElement([
       'fighting',
       'out_of_combat',
       'patrolling',
@@ -29,22 +29,22 @@ factory.define('Monster', Monster, async () => {
   const heroes = await factory.create('Hero', { rank: 'S' });
 
   return {
-    name: faker.name.findName,
+    name: faker.person.fullName,
     location: () => ({
       type: 'Point',
       coordinates: [
-        Number(faker.address.longitude()),
-        Number(faker.address.latitude()),
+        Number(faker.location.longitude()),
+        Number(faker.location.latitude()),
       ],
     }),
     heroes,
-    status: () => faker.random.arrayElement(['fighting', 'defeated', 'free']),
-    rank: faker.random.arrayElement(['God', 'Dragon', 'Tiger', 'Wolf']),
+    status: () => faker.helpers.arrayElement(['fighting', 'defeated', 'free']),
+    rank: faker.helpers.arrayElement(['God', 'Dragon', 'Tiger', 'Wolf']),
   };
 });
 
 factory.define('User', User, {
-  name: faker.name.findName,
+  name: faker.person.fullName,
   email: faker.internet.email,
   password: faker.internet.password,
 });
