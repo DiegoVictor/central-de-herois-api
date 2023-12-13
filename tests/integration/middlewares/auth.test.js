@@ -3,7 +3,7 @@ import Mongoose from 'mongoose';
 import { faker } from '@faker-js/faker';
 import jwt from 'jsonwebtoken';
 
-import app from '../../../src/app';
+import { app } from '../../../src/app';
 
 describe('Auth middleware', () => {
   afterAll(async () => {

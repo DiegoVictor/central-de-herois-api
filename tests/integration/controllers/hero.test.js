@@ -1,7 +1,7 @@
 import request from 'supertest';
-import Mongoose from 'mongoose';
+import mongoose from 'mongoose';
 
-import app from '../../../src/app';
+import { app } from '../../../src/app';
 import Hero from '../../../src/app/models/Hero';
 import factory from '../../utils/factory';
 import jwtoken from '../../utils/jwtoken';
@@ -19,7 +19,7 @@ describe('Hero controller', () => {
   });
 
   afterAll(async () => {
-    await Mongoose.disconnect();
+    await mongoose.disconnect();
   });
 
   it('should be able to get a list of heroes', async () => {

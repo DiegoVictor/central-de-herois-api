@@ -1,7 +1,7 @@
 import request from 'supertest';
 import Mongoose from 'mongoose';
 
-import app from '../../../src/app';
+import { app } from '../../../src/app';
 import Hero from '../../../src/app/models/Hero';
 import Monster from '../../../src/app/models/Monster';
 import factory from '../../utils/factory';
