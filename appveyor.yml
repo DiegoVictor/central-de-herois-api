@@ -1,0 +1,18 @@
+version: 1.0.{build}
+image: Ubuntu
+environment:
+  APP_PORT: 3333
+  MONGO_URL: mongodb://mongo:27017/central-de-herois
+  JWT_EXPIRATION_TIME: 1d
+  JWT_SECRET: testing
+  MONSTER_WEBSOCKET: http://localhost:8080/central-de-herois/monstros
+install:
+  - sh: npm ci
+test_script:
+  - sh: npm run test
+on_success:
+  - sh: |
+      curl -Os https://uploader.codecov.io/latest/linux/codecov
+
+      chmod +x codecov
+      ./codecov
