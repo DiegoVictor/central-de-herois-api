@@ -30,7 +30,7 @@ describe('Monster controller', () => {
       .send();
 
     expect(Array.isArray(body)).toBeTruthy();
-    monsters.forEach(monster => {
+    monsters.forEach((monster) => {
       expect(body).toContainEqual(
         expect.objectContaining({ _id: monster._id.toString() })
       );
@@ -50,7 +50,7 @@ describe('Monster controller', () => {
       .send();
 
     expect(Array.isArray(body)).toBeTruthy();
-    monsters.forEach(monster => {
+    monsters.forEach((monster) => {
       if (monster.status === status) {
         expect(body).toContainEqual(
           expect.objectContaining({ _id: monster._id.toString() }),

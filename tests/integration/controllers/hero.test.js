@@ -30,7 +30,7 @@ describe('Hero controller', () => {
       .send();
 
     expect(Array.isArray(body)).toBeTruthy();
-    heroes.forEach(hero => {
+    heroes.forEach((hero) => {
       expect(body).toContainEqual(
         expect.objectContaining({ _id: hero._id.toString() })
       );
@@ -38,9 +38,8 @@ describe('Hero controller', () => {
   });
 
   it('should be able to store a new heroes', async () => {
-    const { name, status, rank, location, description } = await factory.attrs(
-      'Hero'
-    );
+    const { name, status, rank, location, description } =
+      await factory.attrs('Hero');
 
     const { body } = await request(app)
       .post('/heroes')
@@ -58,16 +57,16 @@ describe('Hero controller', () => {
       name,
       status,
       rank,
-      location,
+      latitude: location.coordinates[1],
+      longitude: location.coordinates[0],
       description,
     });
   });
 
   it('should be able to update an hero', async () => {
     const hero = await factory.create('Hero');
-    const { name, status, rank, location, description } = await factory.attrs(
-      'Hero'
-    );
+    const { name, status, rank, location, description } =
+      await factory.attrs('Hero');
 
     const { body } = await request(app)
       .put(`/heroes/${hero._id}`)
@@ -93,9 +92,8 @@ describe('Hero controller', () => {
 
   it('should not be able to update an hero that not exists', async () => {
     const hero = await factory.create('Hero');
-    const { name, status, rank, location, description } = await factory.attrs(
-      'Hero'
-    );
+    const { name, status, rank, location, description } =
+      await factory.attrs('Hero');
 
     await hero.remove();
 

@@ -11,10 +11,7 @@ describe('Auth middleware', () => {
   });
 
   it('should not be able to request without a token', async () => {
-    const { body } = await request(app)
-      .get('/heros')
-      .expect(400)
-      .send();
+    const { body } = await request(app).get('/heros').expect(400).send();
 
     expect(body).toStrictEqual({
       error: {
