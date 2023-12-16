@@ -1,5 +1,5 @@
-import Monster from '../models/Monster';
-import Hero from '../models/Hero';
+import { Monster } from '../models/Monster';
+import { Hero } from '../models/Hero';
 
 class DefeatedController {
   async update(req, res) {

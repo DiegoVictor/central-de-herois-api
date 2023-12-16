@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken';
 import bcryptjs from 'bcryptjs';
 
-import User from '../models/User';
+import { User } from '../models/User';
 
 class SessionController {
   async store(req, res) {

@@ -1,4 +1,4 @@
-import Monster from '../models/Monster';
+import { Monster } from '../models/Monster';
 
 class MonsterController {
   async index(req, res) {

@@ -1,6 +1,6 @@
 import { model, Schema } from 'mongoose';
 
-export const HeroSchema = new Schema(
+const HeroSchema = new Schema(
   {
     name: {
       type: String,
@@ -37,4 +37,4 @@ export const HeroSchema = new Schema(
   { timestamps: true, collection: 'heroes' }
 );
 
-export default model('Hero', HeroSchema);
+export const Hero = model('Hero', HeroSchema);

@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import Hero from '../models/Hero';
+import { Hero } from '../models/Hero';
 
 class HeroController {
   async index(_, res) {
