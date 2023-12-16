@@ -21,7 +21,26 @@ class MonsterController {
     }
 
     const monsters = await Monster.aggregate(aggregation);
-    return res.json(monsters);
+    return res.json(
+      monsters.map((monster) => {
+        const {
+          name,
+          heroes,
+          rank,
+          location: {
+            coordinates: [longitude, latitude],
+          },
+        } = monster;
+        return {
+          name,
+          heroes,
+          status: monster.status,
+          rank,
+          longitude,
+          latitude,
+        };
+      })
+    );
   }
 }
 

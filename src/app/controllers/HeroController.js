@@ -5,7 +5,27 @@ import { Hero } from '../models/Hero';
 class HeroController {
   async index(_, res) {
     const heroes = await Hero.find();
-    return res.json(heroes);
+
+    return res.json(
+      heroes.map(
+        ({
+          name,
+          status,
+          rank,
+          description,
+          location: {
+            coordinates: [longitude, latitude],
+          },
+        }) => ({
+          name,
+          status,
+          rank,
+          description,
+          longitude,
+          latitude,
+        })
+      )
+    );
   }
 
   async store(req, res) {
@@ -36,14 +56,7 @@ class HeroController {
       }
     );
 
-    return res.json({
-      name,
-      latitude,
-      longitude,
-      rank,
-      status,
-      description,
-    });
+    return res.sendStatus(201);
   }
 
   async update(req, res) {
@@ -71,41 +84,43 @@ class HeroController {
       });
     }
 
-    if (typeof latitude !== 'undefined') {
+    const { coordinates } = hero.location;
+    if (latitude) {
       hero.location = {
         type: 'Point',
-        coordinates: [hero.location.coordinates[0], latitude],
+        coordinates: [coordinates[0], latitude],
       };
     }
 
-    if (typeof longitude !== 'undefined') {
+    if (longitude) {
       hero.location = {
         type: 'Point',
-        coordinates: [longitude, hero.location.coordinates[1]],
+        coordinates: [longitude, coordinates[1]],
       };
     }
 
     ['rank', 'status', 'description'].forEach((field) => {
-      if (typeof req.body[field] !== 'undefined') {
+      if (req.body[field]) {
         hero[field] = req.body[field];
       }
     });
 
-    if (typeof name === 'string' && name !== hero.name) {
-      if (!(await Hero.findOne({ name }))) {
-        hero.name = name;
-      } else {
+    if (name && name !== hero.name) {
+      const existingHero = await Hero.findOne({ name });
+      if (existingHero) {
         return res.status(401).json({
           error: {
             message: 'Name already in use',
           },
         });
       }
+
+      hero.name = name;
     }
 
     await hero.save();
 
-    return res.json(hero);
+    return res.sendStatus(204);
   }
 
   async destroy(req, res) {
@@ -122,9 +137,7 @@ class HeroController {
 
     await hero.remove();
 
-    return res.status(200).json({
-      status: 'success',
-    });
+    return res.sendStatus(204);
   }
 }
 
