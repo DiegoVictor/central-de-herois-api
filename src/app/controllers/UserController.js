@@ -4,7 +4,7 @@ class UserController {
   async store(req, res) {
     const { name, email, password } = req.body;
 
-    let user = await User.findOne({ email });
+    const user = await User.findOne({ email });
     if (user) {
       return res.status(401).json({
         error: {
@@ -13,8 +13,9 @@ class UserController {
       });
     }
 
-    user = await User.create({ name, email, password });
-    return res.json({ name, email });
+    await User.create({ name, email, password });
+
+    return res.sendStatus(201);
   }
 }
 

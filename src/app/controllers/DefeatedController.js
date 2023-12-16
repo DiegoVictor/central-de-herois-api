@@ -47,7 +47,7 @@ class DefeatedController {
     monster.status = 'defeated';
     await monster.save();
 
-    return res.json(monster);
+    return res.sendStatus(204);
   }
 }
 
