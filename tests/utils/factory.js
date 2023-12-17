@@ -1,9 +1,9 @@
 import { factory } from 'factory-girl';
 import { faker } from '@faker-js/faker';
 
-import Hero from '../../src/app/models/Hero';
-import Monster from '../../src/app/models/Monster';
-import User from '../../src/app/models/User';
+import { Hero } from '../../src/app/models/Hero';
+import { Monster } from '../../src/app/models/Monster';
+import { User } from '../../src/app/models/User';
 
 factory.define('Hero', Hero, {
   name: faker.person.firstName,
@@ -26,8 +26,7 @@ factory.define('Hero', Hero, {
 });
 
 factory.define('Monster', Monster, async () => {
-  const heroes = await factory.create('Hero', { rank: 'S' });
-
+  const hero = await factory.create('Hero', { rank: 'S' });
   return {
     name: faker.person.fullName,
     location: () => ({
@@ -37,7 +36,7 @@ factory.define('Monster', Monster, async () => {
         Number(faker.location.latitude()),
       ],
     }),
-    heroes,
+    heroes: [hero],
     status: () => faker.helpers.arrayElement(['fighting', 'defeated', 'free']),
     rank: faker.helpers.arrayElement(['God', 'Dragon', 'Tiger', 'Wolf']),
   };
