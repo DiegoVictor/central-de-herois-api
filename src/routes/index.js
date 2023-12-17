@@ -1,6 +1,6 @@
 import { Router } from 'express';
 
-import { auth } from '../app/middlewares/auth';
+import { auth } from '../middlewares/auth';
 import { general } from './general';
 import { heroes } from './heroes';
 import { monsters } from './monsters';
