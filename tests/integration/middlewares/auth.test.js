@@ -1,5 +1,5 @@
 import request from 'supertest';
-import Mongoose from 'mongoose';
+import mongoose from 'mongoose';
 import { faker } from '@faker-js/faker';
 import jwt from 'jsonwebtoken';
 
@@ -7,7 +7,7 @@ import { app } from '../../../src/app';
 
 describe('Auth middleware', () => {
   afterAll(async () => {
-    await Mongoose.disconnect();
+    await mongoose.disconnect();
   });
 
   it('should not be able to request without a token', async () => {
