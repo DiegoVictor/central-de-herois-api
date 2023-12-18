@@ -14,35 +14,29 @@ class DefeatedController {
       });
     }
 
-    const heroes = [];
-    req.body.heroes.forEach(({ _id }) => {
-      heroes.push(Hero.findById(_id));
-    });
+    const { heroes } = req.body;
 
-    let found_all_heroes = true;
+    const heroesId = heroes.map(({ _id }) => _id);
+    const existingHeroes = await Hero.find({ _id: { $in: heroesId } });
 
-    const result = await Promise.all(heroes);
-    result.every(async (hero) => {
-      if (hero) {
-        hero.status = req.body.heroes.find(
-          (h) => h._id === hero._id.toString()
-        ).status;
-        await hero.save();
-        monster.heroes.push(hero._id);
-        return true;
-      }
-
-      found_all_heroes = false;
-      return false;
-    });
-
-    if (!found_all_heroes) {
+    if (existingHeroes.length !== heroesId.length) {
       return res.status(400).json({
         error: {
           message: `Hero not found`,
         },
       });
     }
+
+    await Promise.all(
+      existingHeroes.map((hero) => {
+        hero.status = heroes.find(
+          ({ _id }) => _id === hero._id.toString()
+        ).status;
+
+        monster.heroes.push(hero._id);
+        return hero.save();
+      })
+    );
 
     monster.status = 'defeated';
     await monster.save();
