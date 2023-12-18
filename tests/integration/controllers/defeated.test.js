@@ -28,9 +28,10 @@ describe('Defeated controller', () => {
     const { _id } = await factory.create('Monster', { heroes: [] });
     const hero = await factory.create('Hero', { status: 'fighting' });
 
-    const { body } = await request(app)
+    await request(app)
       .put(`/monsters/${_id}/defeated`)
       .set('Authorization', token)
+      .expect(204)
       .send({
         heroes: [
           {
@@ -40,11 +41,6 @@ describe('Defeated controller', () => {
         ],
       });
 
-    expect(body).toMatchObject({
-      _id: _id.toString(),
-      status: 'defeated',
-      heroes: [hero._id.toString()],
-    });
     expect(await Hero.findById(hero._id)).toMatchObject({ status: 'resting' });
   });
 
