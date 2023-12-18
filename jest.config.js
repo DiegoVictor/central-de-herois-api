@@ -6,7 +6,7 @@ module.exports = {
   // automock: false,
 
   // Stop running tests after `n` failures
-  bail: 1,
+  // bail: 0,
 
   // Respect "browser" field in package.json when resolving modules
   // browser: false,
@@ -159,9 +159,7 @@ module.exports = {
   // timers: "real",
 
   // A map from regular expressions to paths to transformers
-  transform: {
-    '.(js|jsx|ts|tsx)': '@sucrase/jest-plugin',
-  },
+  // transform: {},
 
   // An array of regexp pattern strings that are matched against all source file paths, matched files will skip transformation
   // transformIgnorePatterns: [
