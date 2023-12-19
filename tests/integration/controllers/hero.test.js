@@ -30,9 +30,18 @@ describe('Hero controller', () => {
       .send();
 
     expect(Array.isArray(body)).toBeTruthy();
-    heroes.forEach((hero) => {
+
+    heroes.forEach(({ _id, name, status, rank, description, location }) => {
       expect(body).toContainEqual(
-        expect.objectContaining({ _id: hero._id.toString() })
+        expect.objectContaining({
+          _id: _id.toString(),
+          name,
+          status,
+          rank,
+          description,
+          longitude: location.coordinates[0],
+          latitude: location.coordinates[1],
+        })
       );
     });
   });
@@ -41,9 +50,10 @@ describe('Hero controller', () => {
     const { name, status, rank, location, description } =
       await factory.attrs('Hero');
 
-    const { body } = await request(app)
+    await request(app)
       .post('/heroes')
       .set('Authorization', token)
+      .expect(201)
       .send({
         name,
         status,
@@ -52,15 +62,6 @@ describe('Hero controller', () => {
         longitude: location.coordinates[0],
         latitude: location.coordinates[1],
       });
-
-    expect(body).toMatchObject({
-      name,
-      status,
-      rank,
-      latitude: location.coordinates[1],
-      longitude: location.coordinates[0],
-      description,
-    });
   });
 
   it('should be able to update an hero', async () => {
@@ -68,9 +69,10 @@ describe('Hero controller', () => {
     const { name, status, rank, location, description } =
       await factory.attrs('Hero');
 
-    const { body } = await request(app)
+    await request(app)
       .put(`/heroes/${hero._id}`)
       .set('Authorization', token)
+      .expect(204)
       .send({
         name,
         status,
@@ -79,15 +81,6 @@ describe('Hero controller', () => {
         longitude: location.coordinates[0],
         latitude: location.coordinates[1],
       });
-
-    expect(body).toMatchObject({
-      _id: hero._id.toString(),
-      name,
-      status,
-      rank,
-      location,
-      description,
-    });
   });
 
   it('should not be able to update an hero that not exists', async () => {
@@ -136,15 +129,11 @@ describe('Hero controller', () => {
   it('should be able to delete an hero', async () => {
     const hero = await factory.create('Hero');
 
-    const { body } = await request(app)
+    await request(app)
       .delete(`/heroes/${hero._id}`)
       .set('Authorization', token)
-      .expect(200)
+      .expect(204)
       .send();
-
-    expect(body).toStrictEqual({
-      status: 'success',
-    });
   });
 
   it('should not be able to delete an hero that not exists', async () => {

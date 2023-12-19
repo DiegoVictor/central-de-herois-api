@@ -31,8 +31,31 @@ describe('Monster controller', () => {
 
     expect(Array.isArray(body)).toBeTruthy();
     monsters.forEach((monster) => {
+      const {
+        _id,
+        name,
+        heroes,
+        rank,
+        location: {
+          coordinates: [longitude, latitude],
+        },
+        status,
+      } = monster;
+
       expect(body).toContainEqual(
-        expect.objectContaining({ _id: monster._id.toString() })
+        expect.objectContaining({
+          _id: _id.toString(),
+          name,
+          heroes: heroes.map((hero) =>
+            expect.objectContaining({
+              _id: hero._id.toString(),
+            })
+          ),
+          rank,
+          longitude,
+          latitude,
+          status,
+        })
       );
     });
   });
@@ -44,19 +67,40 @@ describe('Monster controller', () => {
       { status: 'fighting' },
       { status: 'free' },
     ]);
+
     const { body } = await request(app)
       .get(`/monsters?status=${status}`)
       .set('Authorization', token)
       .send();
 
     expect(Array.isArray(body)).toBeTruthy();
-    monsters.forEach((monster) => {
-      if (monster.status === status) {
-        expect(body).toContainEqual(
-          expect.objectContaining({ _id: monster._id.toString() }),
-          status
-        );
-      }
-    });
+
+    const [
+      {
+        _id,
+        name,
+        heroes,
+        rank,
+        location: {
+          coordinates: [longitude, latitude],
+        },
+      },
+    ] = monsters;
+
+    expect(body).toContainEqual(
+      expect.objectContaining({
+        _id: _id.toString(),
+        name,
+        heroes: heroes.map((hero) =>
+          expect.objectContaining({
+            _id: hero._id.toString(),
+          })
+        ),
+        status,
+        rank,
+        longitude,
+        latitude,
+      })
+    );
   });
 });

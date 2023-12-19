@@ -16,11 +16,10 @@ describe('User controller', () => {
 
   it('should be able to store a new user', async () => {
     const { name, email, password } = await factory.attrs('User');
-    const { body } = await request(app)
+    await request(app)
       .post('/users')
+      .expect(201)
       .send({ name, email, password });
-
-    expect(body).toMatchObject({ name, email });
   });
 
   it('should not be able to store a new user with a duplicated email', async () => {
