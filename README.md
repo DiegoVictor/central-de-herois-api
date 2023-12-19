@@ -9,7 +9,20 @@
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)<br>
 [![Run in Insomnia}](https://insomnia.rest/images/run.svg)](https://insomnia.rest/run/?label=Central%20de%20Her%C3%B3is&uri=https%3A%2F%2Fraw.githubusercontent.com%2FDiegoVictor%2Fcentral-de-herois-api%2Fmain%2FInsomnia_2021-07-24.json)
 
-# Install
+Allow users to register and log in, to create, update and delete heroes, list monsters and change a combat status. The app uses JWT for authentication.
+
+## Table of Contents
+* [Installing](#installing)
+  * [Configuring](#configuring)
+    * [MongoDB](#mongodb)
+    * [.env](#env)
+* [Usage](#usage)
+  * [Bearer Token](#bearer-token)
+  * [Routes](#routes)
+    * [Requests](#requests)
+* [Running the tests](#running-the-tests)
+  * [Coverage report](#coverage-report)
+
 ```
 $ yarn
 ```
