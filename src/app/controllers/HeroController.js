@@ -9,6 +9,7 @@ class HeroController {
     return res.json(
       heroes.map(
         ({
+          _id,
           name,
           status,
           rank,
@@ -17,6 +18,7 @@ class HeroController {
             coordinates: [longitude, latitude],
           },
         }) => ({
+          _id,
           name,
           status,
           rank,
