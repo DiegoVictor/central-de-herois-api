@@ -1,7 +1,7 @@
 import { Router } from 'express';
 
-import { MonsterController } from '../app/controllers/MonsterController';
-import { DefeatedController } from '../app/controllers/DefeatedController';
+import { MonsterController } from '../controllers/MonsterController';
+import { DefeatedController } from '../controllers/DefeatedController';
 
 const app = Router();
 
