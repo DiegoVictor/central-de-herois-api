@@ -1,9 +1,9 @@
 import { factory } from 'factory-girl';
 import { faker } from '@faker-js/faker';
 
-import { Hero } from '../../src/app/models/Hero';
-import { Monster } from '../../src/app/models/Monster';
-import { User } from '../../src/app/models/User';
+import { Hero } from '../../src/models/Hero';
+import { Monster } from '../../src/models/Monster';
+import { User } from '../../src/models/User';
 
 factory.define('Hero', Hero, {
   name: faker.person.firstName,
