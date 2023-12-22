@@ -1,7 +1,7 @@
 import { model, Schema } from 'mongoose';
 import bcryptjs from 'bcryptjs';
 
-const UserSchema = new Schema(
+const schema = new Schema(
   {
     name: {
       type: String,
@@ -19,11 +19,11 @@ const UserSchema = new Schema(
   { timestamps: true }
 );
 
-UserSchema.pre('save', async function beforeSave(next) {
+schema.pre('save', async function beforeSave(next) {
   if (this.isNew) {
     this.password = await bcryptjs.hash(this.password, 8);
   }
   next();
 });
 
-export const User = model('User', UserSchema);
+export const User = model('User', schema);
