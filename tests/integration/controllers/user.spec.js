@@ -30,9 +30,7 @@ describe('User controller', () => {
       .send({ name, email, password });
 
     expect(body).toStrictEqual({
-      error: {
-        message: 'Email already in use',
-      },
+      message: 'Email already in use',
     });
   });
 });
