@@ -3,7 +3,7 @@ import { faker } from '@faker-js/faker';
 
 import { Hero } from '../../src/models/Hero';
 import { Monster } from '../../src/models/Monster';
-import { User } from '../../src/models/User';
+import { User } from '../../src/repositories/user';
 
 factory.define('Hero', Hero, {
   name: faker.person.firstName,
