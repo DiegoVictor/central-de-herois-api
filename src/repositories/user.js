@@ -19,16 +19,16 @@ const schema = new Schema(
   { timestamps: true }
 );
 
-const user = model('User', schema);
+export const User = model('User', schema);
 
 export class UserRepository {
   async create({ name, email, password }) {
     password = await bcryptjs.hash(password, 8);
 
-    return user.create({ name, email, password });
+    return User.create({ name, email, password });
   }
 
   async findOne(conditions) {
-    return user.findOne(conditions);
+    return User.findOne(conditions);
   }
 }
