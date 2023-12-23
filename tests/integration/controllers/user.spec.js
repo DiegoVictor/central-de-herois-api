@@ -2,7 +2,7 @@ import request from 'supertest';
 import Mongoose from 'mongoose';
 
 import { app } from '../../../src/app';
-import { User } from '../../../src/models/User';
+import { User } from '../../../src/repositories/user';
 import factory from '../../utils/factory';
 
 describe('User controller', () => {

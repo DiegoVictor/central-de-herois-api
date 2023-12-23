@@ -1,7 +1,9 @@
 class Failure {
-  constructor(httpCode, response) {
+  constructor(httpCode, message) {
     this.httpCode = httpCode;
-    this.response = response;
+    this.response = {
+      message,
+    };
   }
 
   isFailure() {
@@ -13,4 +15,4 @@ class Failure {
   }
 }
 
-export const failure = (httpCode, response) => new Failure(httpCode, response);
+export const failure = (httpCode, message) => new Failure(httpCode, message);
