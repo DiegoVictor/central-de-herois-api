@@ -1,21 +1,17 @@
-import { User } from '../models/User';
+import { UserRepository } from '../repositories/user';
+import { CreateUserUseCase } from '../use-cases/create-user';
+import { HttpResponse } from '../utils/either/parser';
 
 class UserController {
   async store(req, res) {
     const { name, email, password } = req.body;
 
-    const user = await User.findOne({ email });
-    if (user) {
-      return res.status(401).json({
-        error: {
-          message: 'Email already in use',
-        },
-      });
-    }
+    const userRepository = new UserRepository();
+    const createUserUseCase = new CreateUserUseCase(userRepository);
 
-    await User.create({ name, email, password });
+    const result = await createUserUseCase.execute({ name, email, password });
 
-    return res.sendStatus(201);
+    return HttpResponse.parse(result, res);
   }
 }
 
