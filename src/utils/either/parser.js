@@ -7,13 +7,13 @@ export class HttpResponse {
         return res.json(response);
       }
 
-      return res.send(httpCode).json(response);
+      return res.sendStatus(httpCode);
     }
 
     if (response) {
-      return res.status(httpCode).send(response);
+      return res.status(httpCode).json(response);
     }
 
-    return res.status(httpCode ?? 500).send();
+    return res.sendStatus(httpCode ?? 500);
   }
 }
