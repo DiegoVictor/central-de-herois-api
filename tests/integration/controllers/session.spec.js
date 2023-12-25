@@ -1,6 +1,7 @@
 import request from 'supertest';
-import Mongoose from 'mongoose';
+import mongoose from 'mongoose';
 import { faker } from '@faker-js/faker';
+import bcryptjs from 'bcryptjs';
 
 import { app } from '../../../src/app';
 import { User } from '../../../src/repositories/user';
@@ -12,12 +13,15 @@ describe('Session controller', () => {
   });
 
   afterAll(async () => {
-    await Mongoose.disconnect();
+    await mongoose.disconnect();
   });
 
   it('should be able to login', async () => {
     const { name, email, password } = await factory.attrs('User');
-    const user = await User.create({ name, email, password });
+    const hashedPassword = await bcryptjs.hash(password, 8);
+
+    const user = await User.create({ name, email, password: hashedPassword });
+
     const { body } = await request(app)
       .post('/sessions')
       .send({ email, password });
@@ -36,26 +40,24 @@ describe('Session controller', () => {
       .send({ email, password });
 
     expect(body).toStrictEqual({
-      error: {
-        message: 'User not exists',
-      },
+      message: 'User not exists',
     });
   });
 
-  it('should be able to login', async () => {
-    const wrong_password = faker.internet.password();
+  it('should not be able to login', async () => {
+    const wrongPassword = faker.internet.password();
     const { name, email, password } = await factory.attrs('User');
-    await User.create({ name, email, password });
+
+    const hashedPassword = await bcryptjs.hash(password, 8);
+    await User.create({ name, email, password: hashedPassword });
 
     const { body } = await request(app)
       .post('/sessions')
       .expect(400)
-      .send({ email, password: wrong_password });
+      .send({ email, password: wrongPassword });
 
     expect(body).toMatchObject({
-      error: {
-        message: 'User and/or password not match',
-      },
+      message: 'User and/or password not match',
     });
   });
 });
