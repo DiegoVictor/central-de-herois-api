@@ -14,6 +14,6 @@ export class CreateUserUseCase {
 
     await this.userRepository.create({ name, email, password });
 
-    return success();
+    return success(null, 201);
   }
 }
