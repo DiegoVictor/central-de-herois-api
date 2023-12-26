@@ -3,7 +3,7 @@ import Mongoose from 'mongoose';
 
 import { app } from '../../../src/app';
 import { Hero } from '../../../src/models/Hero';
-import { Monster } from '../../../src/models/Monster';
+import { Monster } from '../../../src/repositories/monster';
 import factory from '../../utils/factory';
 import jwtoken from '../../utils/jwtoken';
 

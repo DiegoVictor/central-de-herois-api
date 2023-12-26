@@ -4,7 +4,7 @@ import Mongoose from 'mongoose';
 import { app } from '../../../src/app';
 import factory from '../../utils/factory';
 import jwtoken from '../../utils/jwtoken';
-import { Monster } from '../../../src/models/Monster';
+import { Monster } from '../../../src/repositories/monster';
 
 let token;
 

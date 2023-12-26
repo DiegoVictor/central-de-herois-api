@@ -1,4 +1,4 @@
-import { Monster } from '../models/Monster';
+import { Monster } from '../repositories/monster';
 import { Hero } from '../models/Hero';
 
 class DefeatedController {

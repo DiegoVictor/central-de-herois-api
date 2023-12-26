@@ -2,7 +2,7 @@ import { factory } from 'factory-girl';
 import { faker } from '@faker-js/faker';
 
 import { Hero } from '../../src/models/Hero';
-import { Monster } from '../../src/models/Monster';
+import { Monster } from '../../src/repositories/monster';
 import { User } from '../../src/repositories/user';
 
 factory.define('Hero', Hero, {
