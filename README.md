@@ -23,12 +23,16 @@ Allow users to register and log in, to create, update and delete heroes, list mo
 * [Running the tests](#running-the-tests)
   * [Coverage report](#coverage-report)
 
+# Installing
+Easy peasy lemon squeezy:
 ```
 $ yarn
 ```
-
-# Dependencies
-Was installed and configured the `eslint` and `prettier` to keep the code clean and patterned.
+Or:
+```
+$ npm install
+```
+> Was installed and configured the [`eslint`](https://eslint.org/) and [`prettier`](https://prettier.io/) to keep the code clean and patterned.
 
 # Databases
 The application use one databases: MongoDB. For the fastest setup is recommended to use docker, see how to do it below. For the fastest setup is recommended to use [docker-compose](https://docs.docker.com/compose/), you just need to up all services:
