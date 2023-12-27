@@ -1,5 +1,5 @@
 import request from 'supertest';
-import Mongoose from 'mongoose';
+import mongoose from 'mongoose';
 
 import { app } from '../../../src/app';
 import factory from '../../utils/factory';
@@ -19,17 +19,19 @@ describe('Monster controller', () => {
   });
 
   afterAll(async () => {
-    await Mongoose.disconnect();
+    await mongoose.disconnect();
   });
 
   it('should be able to get a list of monsters', async () => {
     const monsters = await factory.createMany('Monster', 3);
+
     const { body } = await request(app)
       .get('/monsters')
       .set('Authorization', token)
       .send();
 
     expect(Array.isArray(body)).toBeTruthy();
+
     monsters.forEach((monster) => {
       const {
         _id,
