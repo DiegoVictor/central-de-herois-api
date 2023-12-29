@@ -2,7 +2,7 @@ import request from 'supertest';
 import Mongoose from 'mongoose';
 
 import { app } from '../../../src/app';
-import { Hero } from '../../../src/models/Hero';
+import { Hero } from '../../../src/repositories/hero';
 import { Monster } from '../../../src/repositories/monster';
 import factory from '../../utils/factory';
 import jwtoken from '../../utils/jwtoken';

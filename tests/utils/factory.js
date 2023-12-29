@@ -1,7 +1,7 @@
 import { factory } from 'factory-girl';
 import { faker } from '@faker-js/faker';
 
-import { Hero } from '../../src/models/Hero';
+import { Hero } from '../../src/repositories/hero';
 import { Monster } from '../../src/repositories/monster';
 import { User } from '../../src/repositories/user';
 

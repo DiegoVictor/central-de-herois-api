@@ -1,5 +1,5 @@
 import { Monster } from '../repositories/monster';
-import { Hero } from '../models/Hero';
+import { Hero } from '../repositories/hero';
 
 class DefeatedController {
   async update(req, res) {

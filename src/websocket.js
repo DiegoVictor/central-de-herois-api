@@ -1,7 +1,7 @@
 import io from 'socket.io-client';
 
 import { Monster } from './repositories/monster';
-import { Hero } from './models/Hero';
+import { Hero } from './repositories/hero';
 import {
   HEROES_NEEDED_BY_MONSTER_LEVEL,
   INITIAL_RANGE_IN_METERS,
