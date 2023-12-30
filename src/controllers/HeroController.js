@@ -42,23 +42,19 @@ class HeroController {
       })
       .parse(req.body);
 
-    await Hero.findOneAndUpdate(
-      {
-        name,
-      },
-      {
-        name,
-        location: { type: 'Point', coordinates: [longitude, latitude] },
-        rank,
-        status,
-        description,
-      },
-      {
-        upsert: true,
-      }
-    );
+    const heroRepository = new HeroRepository();
+    const createHeroUseCase = new CreateHeroUseCase(heroRepository);
 
-    return res.sendStatus(201);
+    const result = await createHeroUseCase.execute({
+      name,
+      latitude,
+      longitude,
+      rank,
+      status,
+      description,
+    });
+
+    return HttpResponse.parse(result, res);
   }
 
   async update(req, res) {
