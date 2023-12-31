@@ -6,13 +6,11 @@ export class CreateHeroUseCase {
   }
 
   async execute({ name, latitude, longitude, rank, status, description }) {
-    await this.heroRepository.findOneAndUpdate(
+    await this.heroRepository.findOneByNameAndUpdate(
       {
         name,
-      },
-      {
-        name,
-        location: { type: 'Point', coordinates: [longitude, latitude] },
+        longitude,
+        latitude,
         rank,
         status,
         description,
