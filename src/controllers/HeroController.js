@@ -1,6 +1,8 @@
 import { z } from 'zod';
 
 import { Hero, HeroRepository } from '../repositories/hero';
+import { HttpResponse } from '../utils/either/parser';
+import { CreateHeroUseCase } from '../use-cases/create-hero';
 
 class HeroController {
   async index(_, res) {
