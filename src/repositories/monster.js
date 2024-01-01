@@ -63,7 +63,7 @@ export class MonsterRepository {
     return Monster.findById(id);
   }
 
-  async create({ name, rank, heroes, longitude, latitude }) {
+  async create({ name, rank, heroes, longitude, latitude, status }) {
     return Monster.create({
       name,
       location: {
@@ -72,7 +72,7 @@ export class MonsterRepository {
       },
       rank,
       heroes,
-      status: 'fighting',
+      status,
     });
   }
 }
