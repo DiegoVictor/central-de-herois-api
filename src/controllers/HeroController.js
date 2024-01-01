@@ -3,6 +3,7 @@ import { z } from 'zod';
 import { Hero, HeroRepository } from '../repositories/hero';
 import { HttpResponse } from '../utils/either/parser';
 import { CreateHeroUseCase } from '../use-cases/create-hero';
+import { DeleteHeroUseCase } from '../use-cases/delete-hero';
 
 class HeroController {
   async index(_, res) {
@@ -126,18 +127,12 @@ class HeroController {
   async destroy(req, res) {
     const { id } = req.params;
 
-    const hero = await Hero.findById(id);
-    if (!hero) {
-      return res.status(404).json({
-        error: {
-          message: 'Hero not found',
-        },
-      });
-    }
+    const heroRepository = new HeroRepository();
+    const deleteHeroUseCase = new DeleteHeroUseCase(heroRepository);
 
-    await hero.remove();
+    const result = await deleteHeroUseCase.execute({ id });
 
-    return res.sendStatus(204);
+    return HttpResponse.parse(result, res);
   }
 }
 
