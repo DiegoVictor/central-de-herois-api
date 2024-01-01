@@ -7,7 +7,7 @@ export class DeleteHeroUseCase {
   }
 
   async execute({ id }) {
-    const hero = await this.heroRepository.findById(id);
+    const hero = await this.heroRepository.findOneById(id);
     if (!hero) {
       return failure(404, 'Hero not found');
     }
