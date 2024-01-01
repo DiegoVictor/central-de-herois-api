@@ -40,6 +40,11 @@ const schema = new Schema(
 export const Hero = model('Hero', schema);
 
 export class HeroRepository {
+
+  async findOneById(id) {
+    return Hero.findById(id);
+  }
+
   async findOneByNameAndUpdate({
     name,
     longitude,
