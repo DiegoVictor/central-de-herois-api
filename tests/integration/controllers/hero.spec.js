@@ -148,9 +148,7 @@ describe('Hero controller', () => {
       .send();
 
     expect(body).toStrictEqual({
-      error: {
-        message: 'Hero not found',
-      },
+      message: 'Hero not found',
     });
   });
 });
