@@ -36,7 +36,7 @@ export class UpdateHeroUseCase {
     });
 
     if (name && name !== hero.name) {
-      const existingHero = await this.heroRepository.findOneByName({ name });
+      const existingHero = await this.heroRepository.findOneByName(name);
       if (existingHero) {
         return failure(401, 'Name already in use');
       }
