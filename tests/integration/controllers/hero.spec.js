@@ -104,9 +104,7 @@ describe('Hero controller', () => {
       });
 
     expect(body).toStrictEqual({
-      error: {
-        message: 'Hero not found',
-      },
+      message: 'Hero not found',
     });
   });
 
@@ -120,9 +118,7 @@ describe('Hero controller', () => {
       .send({ name });
 
     expect(body).toStrictEqual({
-      error: {
-        message: 'Name already in use',
-      },
+      message: 'Name already in use',
     });
   });
 
