@@ -3,6 +3,7 @@ import { z } from 'zod';
 import { Hero, HeroRepository } from '../repositories/hero';
 import { HttpResponse } from '../utils/either/parser';
 import { CreateHeroUseCase } from '../use-cases/create-hero';
+import { UpdateHeroUseCase } from '../use-cases/update-hero';
 import { DeleteHeroUseCase } from '../use-cases/delete-hero';
 
 class HeroController {
@@ -61,7 +62,7 @@ class HeroController {
   }
 
   async update(req, res) {
-    const { name, latitude, longitude } = z
+    const { name, rank, status, description, latitude, longitude } = z
       .object({
         name: z.string().optional(),
         latitude: z.string().or(z.number()).optional(),
@@ -76,52 +77,20 @@ class HeroController {
 
     const { id } = req.params;
 
-    const hero = await Hero.findById(id);
-    if (!hero) {
-      return res.status(404).json({
-        error: {
-          message: 'Hero not found',
-        },
-      });
-    }
+    const heroRepository = new HeroRepository();
+    const updateHeroUseCase = new UpdateHeroUseCase(heroRepository);
 
-    const { coordinates } = hero.location;
-    if (latitude) {
-      hero.location = {
-        type: 'Point',
-        coordinates: [coordinates[0], latitude],
-      };
-    }
-
-    if (longitude) {
-      hero.location = {
-        type: 'Point',
-        coordinates: [longitude, coordinates[1]],
-      };
-    }
-
-    ['rank', 'status', 'description'].forEach((field) => {
-      if (req.body[field]) {
-        hero[field] = req.body[field];
-      }
+    const result = await updateHeroUseCase.execute({
+      id,
+      name,
+      rank,
+      status,
+      description,
+      latitude,
+      longitude,
     });
 
-    if (name && name !== hero.name) {
-      const existingHero = await Hero.findOne({ name });
-      if (existingHero) {
-        return res.status(401).json({
-          error: {
-            message: 'Name already in use',
-          },
-        });
-      }
-
-      hero.name = name;
-    }
-
-    await hero.save();
-
-    return res.sendStatus(204);
+    return HttpResponse.parse(result, res);
   }
 
   async destroy(req, res) {
