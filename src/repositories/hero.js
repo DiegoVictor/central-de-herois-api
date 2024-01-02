@@ -45,6 +45,10 @@ export class HeroRepository {
     return Hero.findById(id);
   }
 
+  async findOneByName(name) {
+    return Hero.findOne({ name });
+  }
+
   async findOneByNameAndUpdate({
     name,
     longitude,
