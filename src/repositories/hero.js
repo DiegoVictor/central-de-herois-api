@@ -40,6 +40,12 @@ const schema = new Schema(
 export const Hero = model('Hero', schema);
 
 export class HeroRepository {
+  async findMany(ids) {
+    if (ids && Array.isArray(ids)) {
+      return Hero.find({ _id: { $in: ids } });
+    }
+    return Hero.find();
+  }
 
   async findOneById(id) {
     return Hero.findById(id);
