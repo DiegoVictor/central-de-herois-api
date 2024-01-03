@@ -1,37 +1,20 @@
 import { z } from 'zod';
 
-import { Hero, HeroRepository } from '../repositories/hero';
+import { HeroRepository } from '../repositories/hero';
 import { HttpResponse } from '../utils/either/parser';
 import { CreateHeroUseCase } from '../use-cases/create-hero';
 import { UpdateHeroUseCase } from '../use-cases/update-hero';
 import { DeleteHeroUseCase } from '../use-cases/delete-hero';
+import { GetHeroesUseCase } from '../use-cases/get-heroes';
 
 class HeroController {
   async index(_, res) {
-    const heroes = await Hero.find();
+    const heroRepository = new HeroRepository();
+    const getHeroesUseCase = new GetHeroesUseCase(heroRepository);
 
-    return res.json(
-      heroes.map(
-        ({
-          _id,
-          name,
-          status,
-          rank,
-          description,
-          location: {
-            coordinates: [longitude, latitude],
-          },
-        }) => ({
-          _id,
-          name,
-          status,
-          rank,
-          description,
-          longitude,
-          latitude,
-        })
-      )
-    );
+    const result = await getHeroesUseCase.execute();
+
+    return HttpResponse.parse(result, res);
   }
 
   async store(req, res) {
