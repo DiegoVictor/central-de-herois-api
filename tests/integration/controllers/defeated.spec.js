@@ -6,6 +6,7 @@ import { Hero } from '../../../src/repositories/hero';
 import { Monster } from '../../../src/repositories/monster';
 import factory from '../../utils/factory';
 import jwtoken from '../../utils/jwtoken';
+import { HERO_STATUS_NAMED } from '../../../src/utils/constants';
 
 let token;
 
@@ -36,12 +37,14 @@ describe('Defeated controller', () => {
         heroes: [
           {
             _id: hero._id,
-            status: 'resting',
+            status: HERO_STATUS_NAMED.RESTING,
           },
         ],
       });
 
-    expect(await Hero.findById(hero._id)).toMatchObject({ status: 'resting' });
+    expect(await Hero.findById(hero._id)).toMatchObject({
+      status: HERO_STATUS_NAMED.RESTING,
+    });
   });
 
   it('should not be able to set a monster that not exists as defeated', async () => {
@@ -58,15 +61,13 @@ describe('Defeated controller', () => {
         heroes: [
           {
             _id: hero._id,
-            status: 'resting',
+            status: HERO_STATUS_NAMED.RESTING,
           },
         ],
       });
 
     expect(body).toStrictEqual({
-      error: {
-        message: 'Monster not found',
-      },
+      message: 'Monster not found',
     });
   });
 
@@ -79,20 +80,18 @@ describe('Defeated controller', () => {
     const { body } = await request(app)
       .put(`/monsters/${monster._id}/defeated`)
       .set('Authorization', token)
-      .expect(400)
+      .expect(404)
       .send({
         heroes: [
           {
             _id: hero._id,
-            status: 'resting',
+            status: HERO_STATUS_NAMED.RESTING,
           },
         ],
       });
 
     expect(body).toStrictEqual({
-      error: {
-        message: 'Hero not found',
-      },
+      message: 'Hero not found',
     });
   });
 });
