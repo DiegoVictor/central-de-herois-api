@@ -1,20 +1,18 @@
-import { Monster } from '../repositories/monster';
-import { Hero } from '../repositories/hero';
+import { z } from 'zod';
 
 class DefeatedController {
   async update(req, res) {
     const { id } = req.params;
-    const monster = await Monster.findById(id);
-
-    if (!monster) {
-      return res.status(404).json({
-        error: {
-          message: 'Monster not found',
-        },
-      });
-    }
-
-    const { heroes } = req.body;
+    const { heroes } = z
+      .object({
+        heroes: z.array(
+          z.object({
+            _id: z.string(0),
+            status: z.enum(HERO_STATUS),
+          })
+        ),
+      })
+      .parse(req.body);
 
     const heroesId = heroes.map(({ _id }) => _id);
     const existingHeroes = await Hero.find({ _id: { $in: heroesId } });
