@@ -1,5 +1,11 @@
 import { z } from 'zod';
 
+import { MonsterRepository } from '../repositories/monster';
+import { HeroRepository } from '../repositories/hero';
+import { UpdateCombatStatusUseCase } from '../use-cases/update-combat-status';
+import { HttpResponse } from '../utils/either/parser';
+import { HERO_STATUS } from '../utils/constants';
+
 class DefeatedController {
   async update(req, res) {
     const { id } = req.params;
@@ -14,32 +20,16 @@ class DefeatedController {
       })
       .parse(req.body);
 
-    const heroesId = heroes.map(({ _id }) => _id);
-    const existingHeroes = await Hero.find({ _id: { $in: heroesId } });
-
-    if (existingHeroes.length !== heroesId.length) {
-      return res.status(400).json({
-        error: {
-          message: `Hero not found`,
-        },
-      });
-    }
-
-    await Promise.all(
-      existingHeroes.map((hero) => {
-        hero.status = heroes.find(
-          ({ _id }) => _id === hero._id.toString()
-        ).status;
-
-        monster.heroes.push(hero._id);
-        return hero.save();
-      })
+    const heroRepository = new HeroRepository();
+    const monsterRepository = new MonsterRepository();
+    const updateCombatStatusUseCase = new UpdateCombatStatusUseCase(
+      heroRepository,
+      monsterRepository
     );
 
-    monster.status = 'defeated';
-    await monster.save();
+    const result = await updateCombatStatusUseCase.execute({ id, heroes });
 
-    return res.sendStatus(204);
+    return HttpResponse.parse(result, res);
   }
 }
 
