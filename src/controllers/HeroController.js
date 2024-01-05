@@ -6,6 +6,7 @@ import { CreateHeroUseCase } from '../use-cases/create-hero';
 import { UpdateHeroUseCase } from '../use-cases/update-hero';
 import { DeleteHeroUseCase } from '../use-cases/delete-hero';
 import { GetHeroesUseCase } from '../use-cases/get-heroes';
+import { HERO_RANK, HERO_STATUS } from '../utils/constants';
 
 class HeroController {
   async index(_, res) {
@@ -23,8 +24,8 @@ class HeroController {
         name: z.string(),
         latitude: z.string().or(z.number()),
         longitude: z.string().or(z.number()),
-        rank: z.enum(['S', 'A', 'B', 'C']),
-        status: z.enum(['fighting', 'out_of_combat', 'patrolling', 'resting']),
+        rank: z.enum(HERO_RANK),
+        status: z.enum(HERO_STATUS),
         description: z.string(),
       })
       .parse(req.body);
@@ -50,10 +51,8 @@ class HeroController {
         name: z.string().optional(),
         latitude: z.string().or(z.number()).optional(),
         longitude: z.string().or(z.number()).optional(),
-        rank: z.enum(['S', 'A', 'B', 'C']).optional(),
-        status: z
-          .enum(['fighting', 'out_of_combat', 'patrolling', 'resting'])
-          .optional(),
+        rank: z.enum(HERO_RANK).optional(),
+        status: z.enum(HERO_STATUS).optional(),
         description: z.string().optional(),
       })
       .parse(req.body);

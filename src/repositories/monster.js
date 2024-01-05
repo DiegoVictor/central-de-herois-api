@@ -1,5 +1,7 @@
 import { model, Schema } from 'mongoose';
 
+import { MONSTER_RANK, MONSTER_STATUS } from '../utils/constants';
+
 const schema = new Schema(
   {
     name: {
@@ -23,12 +25,12 @@ const schema = new Schema(
     heroes: [Schema.Types.ObjectId],
     status: {
       type: String,
-      enum: ['fighting', 'defeated', 'free'],
+      enum: MONSTER_STATUS,
       required: true,
     },
     rank: {
       type: String,
-      enum: ['God', 'Dragon', 'Tiger', 'Wolf'],
+      enum: MONSTER_RANK,
       required: true,
     },
   },

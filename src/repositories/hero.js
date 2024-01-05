@@ -1,5 +1,7 @@
 import { model, Schema } from 'mongoose';
 
+import { HERO_RANK, HERO_STATUS, HERO_STATUS_NAMED } from '../utils/constants';
+
 const schema = new Schema(
   {
     name: {
@@ -25,12 +27,12 @@ const schema = new Schema(
     },
     rank: {
       type: String,
-      enum: ['S', 'A', 'B', 'C'],
+      enum: HERO_RANK,
       required: true,
     },
     status: {
       type: String,
-      enum: ['fighting', 'out_of_combat', 'patrolling', 'resting'],
+      enum: HERO_STATUS,
       required: true,
     },
   },

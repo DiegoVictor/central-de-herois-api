@@ -4,6 +4,12 @@ import { faker } from '@faker-js/faker';
 import { Hero } from '../../src/repositories/hero';
 import { Monster } from '../../src/repositories/monster';
 import { User } from '../../src/repositories/user';
+import {
+  HERO_RANK,
+  HERO_STATUS,
+  MONSTER_RANK,
+  MONSTER_STATUS,
+} from '../../src/utils/constants';
 
 factory.define('Hero', Hero, {
   name: faker.person.firstName,
@@ -15,14 +21,8 @@ factory.define('Hero', Hero, {
       Number(faker.location.latitude()),
     ],
   }),
-  rank: () => faker.helpers.arrayElement(['S', 'A', 'B', 'C']),
-  status: () =>
-    faker.helpers.arrayElement([
-      'fighting',
-      'out_of_combat',
-      'patrolling',
-      'resting',
-    ]),
+  rank: () => faker.helpers.arrayElement(HERO_RANK),
+  status: () => faker.helpers.arrayElement(HERO_STATUS),
 });
 
 factory.define('Monster', Monster, async () => {
@@ -37,8 +37,8 @@ factory.define('Monster', Monster, async () => {
       ],
     }),
     heroes: [hero],
-    status: () => faker.helpers.arrayElement(['fighting', 'defeated', 'free']),
-    rank: faker.helpers.arrayElement(['God', 'Dragon', 'Tiger', 'Wolf']),
+    status: () => faker.helpers.arrayElement(MONSTER_STATUS),
+    rank: () => faker.helpers.arrayElement(MONSTER_RANK),
   };
 });
 

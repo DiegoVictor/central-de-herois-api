@@ -5,6 +5,7 @@ import { app } from '../../../src/app';
 import factory from '../../utils/factory';
 import jwtoken from '../../utils/jwtoken';
 import { Monster } from '../../../src/repositories/monster';
+import { MONSTER_STATUS_NAMED } from '../../../src/utils/constants';
 
 let token;
 
@@ -66,8 +67,8 @@ describe('Monster controller', () => {
     const status = 'defeated';
     const monsters = await factory.createMany('Monster', 3, [
       { status },
-      { status: 'fighting' },
-      { status: 'free' },
+      { status: MONSTER_STATUS_NAMED.FIGHTING },
+      { status: MONSTER_STATUS_NAMED.FREE },
     ]);
 
     const { body } = await request(app)
