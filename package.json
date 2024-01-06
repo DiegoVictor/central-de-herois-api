@@ -1,5 +1,6 @@
 {
   "license": "MIT",
+  "version": "1.0.0",
   "scripts": {
     "build": "sucrase ./src -d ./dist --transforms imports",
     "dev:server": "nodemon src/server.js --legacy-watch",
