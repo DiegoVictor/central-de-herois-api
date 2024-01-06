@@ -6,10 +6,6 @@ class Failure {
     };
   }
 
-  isFailure() {
-    return true;
-  }
-
   isSuccess() {
     return false;
   }

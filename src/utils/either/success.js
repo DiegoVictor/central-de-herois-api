@@ -6,10 +6,6 @@ class Success {
     this.httpCode = httpCode;
   }
 
-  isFailure() {
-    return false;
-  }
-
   isSuccess() {
     return true;
   }
