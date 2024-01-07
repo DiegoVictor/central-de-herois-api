@@ -1,87 +1,93 @@
-import io from 'socket.io-client';
+import { io } from 'socket.io-client';
 
-import { Monster } from './repositories/monster';
-import { Hero } from './repositories/hero';
 import {
   HEROES_NEEDED_BY_MONSTER_LEVEL,
   INITIAL_RANGE_IN_METERS,
+  MAX_RANGE_IN_METERS,
+  MONSTER_STATUS_NAMED,
 } from './utils/constants';
 
-const socket = io(process.env.MONSTER_WEBSOCKET, {
-  autoConnect: false,
-});
-
-const getHeroesIdNearFrom = async ({
-  latitude,
-  longitude,
-  meters = INITIAL_RANGE_IN_METERS,
-  dangerLevel,
-}) => {
-  const heroes = await Hero.find({
-    status: { $nin: ['fighting', 'out_of_combat'] },
-    location: {
-      $near: {
-        $geometry: {
-          type: 'Point',
-          coordinates: [longitude, latitude],
-        },
-        $maxDistance: meters,
-      },
-    },
+export class MonsterWebSocket {
+  socket = io(process.env.MONSTER_WEBSOCKET, {
+    autoConnect: false,
   });
 
-  const heroesByRank = heroes.reduce(
-    (count, hero) => {
-      count[hero.rank].push(hero._id);
-      return count;
-    },
-    { S: [], A: [], B: [], C: [] }
-  );
-
-  const neededHeroes = Object.keys(HEROES_NEEDED_BY_MONSTER_LEVEL[dangerLevel]);
-  const matchedHeroRank = neededHeroes.find(
-    ({ rank, quantity }) => heroesByRank[rank].length >= quantity
-  );
-
-  if (matchedHeroRank) {
-    return heroesByRank[matchedHeroRank];
+  constructor(monsterRepository, heroRepository) {
+    this.monsterRepository = monsterRepository;
+    this.heroRepository = heroRepository;
   }
 
-  return getHeroesIdNearFrom(latitude, longitude, meters * 2, dangerLevel);
-};
+  setup() {
+    this.socket.connect();
+    this.socket.on('occurrence', this.occurrence.bind(this));
+  }
 
-export const setupWebSocket = async () => {
-  socket.connect();
+  async getHeroesIdNearFrom({
+    latitude,
+    longitude,
+    dangerLevel,
+    meters = INITIAL_RANGE_IN_METERS,
+  }) {
+    const nearHeroes = await this.heroRepository.findReadyForCombatNearFrom({
+      longitude,
+      latitude,
+      meters,
+    });
 
-  socket.on('occurrence', async ({ monsterName, dangerLevel, location }) => {
-    const { lat, lng } = location.pop();
-    const allocatedHeroesId = await getHeroesIdNearFrom({
-      latitude: lat,
-      longitude: lng,
+    const heroesByRank = nearHeroes.reduce(
+      (count, hero) => {
+        count[hero.rank].push(hero._id);
+        return count;
+      },
+      { S: [], A: [], B: [], C: [] }
+    );
+
+    const neededHeroesByDangerLevel =
+      HEROES_NEEDED_BY_MONSTER_LEVEL[dangerLevel];
+
+    const match = neededHeroesByDangerLevel.find(
+      ({ rank, quantity }) => heroesByRank[rank].length >= quantity
+    );
+
+    if (match?.rank) {
+      return heroesByRank[match.rank];
+    }
+
+    if (meters >= MAX_RANGE_IN_METERS) {
+      return [];
+    }
+
+    return this.getHeroesIdNearFrom({
+      latitude,
+      longitude,
+      dangerLevel,
+      meters: meters * 2,
+    });
+  }
+
+  async occurrence({ monsterName, dangerLevel, location }) {
+    const { lat: latitude, lng: longitude } = location;
+
+    const allocatedHeroesId = await this.getHeroesIdNearFrom({
+      latitude,
+      longitude,
       dangerLevel,
     });
 
-    await Promise.all([
-      Hero.updateMany(
-        {
-          _id: { $in: allocatedHeroesId },
-        },
-        {
-          $set: {
-            status: 'fighting',
-          },
-        }
-      ),
-      Monster.create({
-        name: monsterName,
-        location: {
-          type: 'Point',
-          coordinates: [lng, lat],
-        },
-        rank: dangerLevel,
-        heroes: allocatedHeroesId,
-        status: 'fighting',
-      }),
-    ]);
-  });
-};
+    const monster = {
+      name: monsterName,
+      rank: dangerLevel,
+      heroes: allocatedHeroesId,
+      longitude,
+      latitude,
+      status: MONSTER_STATUS_NAMED.FREE,
+    };
+
+    if (allocatedHeroesId.length > 0) {
+      monster.status = MONSTER_STATUS_NAMED.FIGHTING;
+      await this.heroRepository.setManyAsFightingById(allocatedHeroesId);
+    }
+
+    await this.monsterRepository.create(monster);
+  }
+}
