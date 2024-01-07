@@ -3,13 +3,10 @@ import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 
-import './database/mongodb';
-import { setupWebSocket } from './websocket';
+import './bootstrap';
 import { routes } from './routes';
 
 export const app = express();
-
-setupWebSocket();
 
 app.use(helmet());
 app.use(cors());
