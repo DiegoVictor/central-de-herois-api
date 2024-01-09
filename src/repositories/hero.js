@@ -81,4 +81,34 @@ export class HeroRepository {
       }
     );
   }
+
+  async findReadyForCombatNearFrom({ longitude, latitude, meters }) {
+    return Hero.find({
+      status: {
+        $nin: [HERO_STATUS_NAMED.FIGHTING, HERO_STATUS_NAMED.OUT_OF_COMBAT],
+      },
+      location: {
+        $near: {
+          $geometry: {
+            type: 'Point',
+            coordinates: [longitude, latitude],
+          },
+          $maxDistance: meters,
+        },
+      },
+    });
+  }
+
+  async setManyAsFightingById(ids) {
+    return Hero.updateMany(
+      {
+        _id: { $in: ids },
+      },
+      {
+        $set: {
+          status: HERO_STATUS_NAMED.FIGHTING,
+        },
+      }
+    );
+  }
 }
