@@ -40,7 +40,7 @@ describe('Session controller', () => {
       .send({ email, password });
 
     expect(body).toStrictEqual({
-      message: 'User not exists',
+      message: 'User does not exists',
     });
   });
 
@@ -57,7 +57,7 @@ describe('Session controller', () => {
       .send({ email, password: wrongPassword });
 
     expect(body).toMatchObject({
-      message: 'User and/or password not match',
+      message: 'User and/or password does not match',
     });
   });
 });

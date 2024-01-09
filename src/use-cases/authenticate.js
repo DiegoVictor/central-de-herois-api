@@ -13,11 +13,11 @@ export class AuthenticateUseCase {
     const user = await this.userRepository.findOne({ email });
 
     if (!user) {
-      return failure(404, 'User not exists');
+      return failure(404, 'User does not exists');
     }
 
     if (!(await bcryptjs.compare(password, user.password))) {
-      return failure(400, 'User and/or password not match');
+      return failure(400, 'User and/or password does not match');
     }
 
     return success({
