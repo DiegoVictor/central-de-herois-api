@@ -1,0 +1,561 @@
+{
+  "openapi": "3.0.2",
+  "info": {
+    "title": "Central de Heroís",
+    "version": "1.0",
+    "license": {
+      "name": "MIT",
+      "url": "https://raw.githubusercontent.com/DiegoVictor/central-de-herois-api/main/LICENSE"
+    }
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3333"
+    }
+  ],
+  "paths": {
+    "/sessions": {
+      "post": {
+        "tags": ["sessions"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/User"
+              },
+              "example": {
+                "email": "johndoe@example.com",
+                "password": "123456"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "User authenticated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "user": {
+                      "type": "object",
+                      "properties": {
+                        "_id": {
+                          "type": "string"
+                        },
+                        "email": {
+                          "type": "string"
+                        },
+                        "name": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "token": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "user": {
+                    "_id": "611addb87678b147a0cad501",
+                    "email": "johndoe@example.com",
+                    "name": "John Doe"
+                  },
+                  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxMWFkZGI4NzY3OGIxNDdhMGNhZDUwMSIsInNlc3Npb24iOiIxZDc2M2EzYy02ZTM1LTRjOTctYjE3Zi1iODVjNDI5NjAzNDciLCJpYXQiOjE2MjkxNTA2NTIsImV4cCI6MTYyOTIzNzA1Mn0.udEeh4VRJZjZhTQ3OeWF567rMfJz2_DowdfXkGW7t6Y"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "User and/or password does not match",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "message": "User and/or password does not match"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User does not exists",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "message": "User does not exists"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users": {
+      "post": {
+        "tags": ["users"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/User"
+              },
+              "example": {
+                "name": "John Doe",
+                "email": "johndoe@example.com",
+                "password": "123456"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "User created successfully"
+          },
+          "401": {
+            "description": "Email already in use",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "message": "Email already in use"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/heroes": {
+      "get": {
+        "tags": ["heroes"],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Return all heroes",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "allOf": [
+                      {
+                        "title": "Hero",
+                        "properties": {
+                          "_id": {
+                            "type": "string"
+                          }
+                        }
+                      },
+                      {
+                        "$ref": "#/components/schemas/Hero"
+                      }
+                    ]
+                  }
+                },
+                "example": [
+                  {
+                    "_id": "659551af5fa6ca2f5c7ab0b4",
+                    "name": "Saitama",
+                    "description": "The most powerful hero",
+                    "rank": "A",
+                    "status": "resting",
+                    "longitude": "-11.17049",
+                    "latitude": "11.41075"
+                  },
+                  {
+                    "_id": "659551af5fa6ca2f5c7ab0b4",
+                    "name": "Genos",
+                    "description": "Cyborg and disciple of Saitama",
+                    "rank": "S",
+                    "status": "patrolling",
+                    "longitude": "-154.18097",
+                    "latitude": "46.35537"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["heroes"],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Hero"
+              },
+              "example": {
+                "name": "Saitama",
+                "description": "The most powerful hero",
+                "rank": "A",
+                "status": "resting",
+                "longitude": "-11.17049",
+                "latitude": "11.41075"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Hero created successfully"
+          }
+        }
+      }
+    },
+    "/heroes/{id}": {
+      "put": {
+        "tags": ["heroes"],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "659551af5fa6ca2f5c7ab0b4"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Hero"
+              },
+              "example": {
+                "name": "Saitama",
+                "description": "The most powerful hero",
+                "rank": "A",
+                "status": "resting",
+                "longitude": "-11.17049",
+                "latitude": "11.41075"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Hero updated successfully"
+          },
+          "401": {
+            "description": "Name already in use",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "message": "Name already in use"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Hero not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "message": "Hero not found"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["heroes"],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "659551af5fa6ca2f5c7ab0b4"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Hero deleted successfully"
+          },
+          "404": {
+            "description": "Hero not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "message": "Hero not found"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/monsters": {
+      "get": {
+        "tags": ["monsters"],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Return all monsters",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Monster"
+                  }
+                },
+                "example": [
+                  {
+                    "_id": "65955de54b50869ce1ef36ef",
+                    "name": "Boros",
+                    "heroes": [
+                      {
+                        "_id": "659551af5fa6ca2f5c7ab0b4",
+                        "name": "Saitama",
+                        "description": "The most powerful hero",
+                        "rank": "A",
+                        "status": "resting",
+                        "longitude": "-11.17049",
+                        "latitude": "11.41075"
+                      }
+                    ],
+                    "status": "fighting",
+                    "rank": "God",
+                    "longitude": "-11.17049",
+                    "latitude": "11.41075"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/monsters/{id}/defeated": {
+      "put": {
+        "tags": ["monsters"],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "65955de54b50869ce1ef36ef"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "heroes": {
+                    "type": "array",
+                    "items": {
+                      "properties": {
+                        "_id": {
+                          "type": "string"
+                        },
+                        "status": {
+                          "type": "string",
+                          "enum": [
+                            "fighting",
+                            "out_of_combat",
+                            "patrolling",
+                            "resting"
+                          ]
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "example": {
+                "heroes": [
+                  {
+                    "_id": "659551af5fa6ca2f5c7ab0b4",
+                    "status": "resting"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Monster marked as defeated"
+          },
+          "404": {
+            "description": "Resource not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "examples": {
+                  "Monster Not found": {
+                    "description": "Monster not found",
+                    "value": {
+                      "message": "Monster not found"
+                    }
+                  },
+                  "Hero Not found": {
+                    "description": "Hero not found",
+                    "value": {
+                      "message": "Hero not found"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "User": {
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        }
+      },
+      "Hero": {
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "rank": {
+            "type": "string",
+            "enum": ["S", "A", "B", "C"]
+          },
+          "status": {
+            "type": "string",
+            "enum": ["fighting", "out_of_combat", "patrolling", "resting"]
+          },
+          "longitude": {
+            "type": "string"
+          },
+          "latitude": {
+            "type": "string"
+          }
+        }
+      },
+      "Monster": {
+        "properties": {
+          "_id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "heroes": {
+            "type": "array",
+            "items": {
+              "allOf": [
+                {
+                  "title": "Hero",
+                  "properties": {
+                    "_id": {
+                      "type": "string"
+                    }
+                  }
+                },
+                {
+                  "$ref": "#/components/schemas/Hero"
+                }
+              ]
+            }
+          },
+          "status": {
+            "type": "string",
+            "enum": ["fighting", "defeated", "free"]
+          },
+          "rank": {
+            "type": "string",
+            "enum": ["God", "Dragon", "Tiger", "Wolf"]
+          },
+          "longitude": {
+            "type": "string"
+          },
+          "latitude": {
+            "type": "string"
+          }
+        }
+      },
+      "Error": {
+        "properties": {
+          "message": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "bearer": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  }
+}
