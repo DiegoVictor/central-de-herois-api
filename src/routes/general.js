@@ -1,7 +1,7 @@
 import { Router } from 'express';
 
-import { SessionController } from '../controllers/SessionController';
-import { UserController } from '../controllers/UserController';
+import { SessionController } from '../controllers/session';
+import { UserController } from '../controllers/user';
 
 const app = Router();
 
