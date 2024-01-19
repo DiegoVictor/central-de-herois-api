@@ -1,6 +1,6 @@
 import { model, Schema } from 'mongoose';
 
-import { MONSTER_RANK, MONSTER_STATUS } from '../utils/constants';
+import { MONSTER_RANK, MONSTER_STATUS } from '../../entities/monster';
 
 const schema = new Schema(
   {

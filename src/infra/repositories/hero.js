@@ -1,6 +1,6 @@
 import { model, Schema } from 'mongoose';
 
-import { HERO_RANK, HERO_STATUS, HERO_STATUS_NAMED } from '../utils/constants';
+import { HERO_RANK, HERO_STATUS, HERO_STATUS_NAMED } from '../../entities/hero';
 
 const schema = new Schema(
   {
@@ -82,7 +82,7 @@ export class HeroRepository {
     );
   }
 
-  async findReadyForCombatNearFrom({ longitude, latitude, meters }) {
+  async findReadyForCombatNearby({ longitude, latitude, meters }) {
     return Hero.find({
       status: {
         $nin: [HERO_STATUS_NAMED.FIGHTING, HERO_STATUS_NAMED.OUT_OF_COMBAT],
