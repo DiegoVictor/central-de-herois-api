@@ -1,6 +1,6 @@
-import { MonsterRepository } from '../repositories/monster';
-import { GetMonstersUseCase } from '../use-cases/get-monsters';
-import { HttpResponse } from '../utils/either/parser';
+import { MonsterRepository } from '../../repositories/monster';
+import { GetMonstersUseCase } from '../../../app/use-cases/get-monsters';
+import { HttpResponse } from '../parser/either';
 
 class MonsterController {
   async index(req, res) {

@@ -1,12 +1,10 @@
-import { z } from 'zod';
-
-import { HeroRepository } from '../repositories/hero';
-import { HttpResponse } from '../utils/either/parser';
-import { CreateHeroUseCase } from '../use-cases/create-hero';
-import { UpdateHeroUseCase } from '../use-cases/update-hero';
-import { DeleteHeroUseCase } from '../use-cases/delete-hero';
-import { GetHeroesUseCase } from '../use-cases/get-heroes';
-import { HERO_RANK, HERO_STATUS } from '../utils/constants';
+import { HeroRepository } from '../../repositories/hero';
+import { HttpResponse } from '../parser/either';
+import { CreateHeroUseCase } from '../../../app/use-cases/create-hero';
+import { UpdateHeroUseCase } from '../../../app/use-cases/update-hero';
+import { DeleteHeroUseCase } from '../../../app/use-cases/delete-hero';
+import { GetHeroesUseCase } from '../../../app/use-cases/get-heroes';
+import { heroValidators } from '../../../app/validators/hero';
 
 class HeroController {
   async index(_, res) {
@@ -19,16 +17,8 @@ class HeroController {
   }
 
   async store(req, res) {
-    const { name, latitude, longitude, rank, status, description } = z
-      .object({
-        name: z.string(),
-        latitude: z.string().or(z.number()),
-        longitude: z.string().or(z.number()),
-        rank: z.enum(HERO_RANK),
-        status: z.enum(HERO_STATUS),
-        description: z.string(),
-      })
-      .parse(req.body);
+    const { name, latitude, longitude, rank, status, description } =
+      heroValidators.store(req.body);
 
     const heroRepository = new HeroRepository();
     const createHeroUseCase = new CreateHeroUseCase(heroRepository);
@@ -46,16 +36,8 @@ class HeroController {
   }
 
   async update(req, res) {
-    const { name, rank, status, description, latitude, longitude } = z
-      .object({
-        name: z.string().optional(),
-        latitude: z.string().or(z.number()).optional(),
-        longitude: z.string().or(z.number()).optional(),
-        rank: z.enum(HERO_RANK).optional(),
-        status: z.enum(HERO_STATUS).optional(),
-        description: z.string().optional(),
-      })
-      .parse(req.body);
+    const { name, rank, status, description, latitude, longitude } =
+      heroValidators.update(req.body);
 
     const { id } = req.params;
 
