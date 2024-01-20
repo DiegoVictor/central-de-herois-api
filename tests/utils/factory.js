@@ -1,15 +1,8 @@
 import { factory } from 'factory-girl';
 import { faker } from '@faker-js/faker';
 
-import { Hero } from '../../src/repositories/hero';
-import { Monster } from '../../src/repositories/monster';
-import { User } from '../../src/repositories/user';
-import {
-  HERO_RANK,
-  HERO_STATUS,
-  MONSTER_RANK,
-  MONSTER_STATUS,
-} from '../../src/utils/constants';
+import { HERO_RANK, HERO_STATUS } from '../../src/entities/hero';
+import { MONSTER_RANK, MONSTER_STATUS } from '../../src/entities/monster';
 
 factory.define('Hero', Hero, {
   name: faker.person.firstName,
