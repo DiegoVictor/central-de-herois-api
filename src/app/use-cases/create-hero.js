@@ -1,4 +1,4 @@
-import { success } from '../utils/either/success';
+import { success } from '../contracts/success';
 
 export class CreateHeroUseCase {
   constructor(heroRepository) {

@@ -1,6 +1,6 @@
-import { MONSTER_STATUS_NAMED } from '../utils/constants';
-import { failure } from '../utils/either/failure';
-import { success } from '../utils/either/success';
+import { MONSTER_STATUS_NAMED } from '../../entities/monster';
+import { failure } from '../contracts/failure';
+import { success } from '../contracts/success';
 
 export class UpdateCombatStatusUseCase {
   constructor(heroRepository, monsterRepository) {

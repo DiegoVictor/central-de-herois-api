@@ -1,8 +1,8 @@
 import jwt from 'jsonwebtoken';
 import bcryptjs from 'bcryptjs';
 
-import { failure } from '../utils/either/failure';
-import { success } from '../utils/either/success';
+import { failure } from '../contracts/failure';
+import { success } from '../contracts/success';
 
 export class AuthenticateUseCase {
   constructor(userRepository) {

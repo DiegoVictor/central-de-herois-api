@@ -1,5 +1,5 @@
-import { failure } from '../utils/either/failure';
-import { success } from '../utils/either/success';
+import { failure } from '../contracts/failure';
+import { success } from '../contracts/success';
 
 export class UpdateHeroUseCase {
   constructor(heroRepository) {
