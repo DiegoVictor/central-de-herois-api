@@ -14,7 +14,7 @@ io.on('connection', (socket) => {
 const scheduleCb = (cb) => {
   const ms = faker.number.int({ min: 1, max: 60 });
 
-  console.log(`Next occurrence in ${ms}s`);
+  console.log(`Next incident in ${ms}s`);
   setTimeout(cb, ms * 1000);
 };
 
@@ -27,8 +27,8 @@ const occurence = () => {
       lng: faker.location.longitude(),
     },
   };
-  io.emit('occurrence', monster);
-  console.log('occurrence', monster);
+  io.emit('incident', monster);
+  console.log('incident', monster);
 
   scheduleCb(occurence);
 };
