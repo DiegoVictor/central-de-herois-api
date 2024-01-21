@@ -1,6 +1,9 @@
 import { factory } from 'factory-girl';
 import { faker } from '@faker-js/faker';
 
+import { Hero } from '../../src/infra/repositories/hero';
+import { Monster } from '../../src/infra/repositories/monster';
+import { User } from '../../src/infra/repositories/user';
 import { HERO_RANK, HERO_STATUS } from '../../src/entities/hero';
 import { MONSTER_RANK, MONSTER_STATUS } from '../../src/entities/monster';
 

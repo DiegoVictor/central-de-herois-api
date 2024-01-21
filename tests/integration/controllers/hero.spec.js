@@ -1,8 +1,8 @@
 import request from 'supertest';
 import mongoose from 'mongoose';
 
-import { app } from '../../../src/app';
-import { Hero } from '../../../src/repositories/hero';
+import { app } from '../../../src/infra/http/app';
+import { Hero } from '../../../src/infra/repositories/hero';
 import factory from '../../utils/factory';
 import jwtoken from '../../utils/jwtoken';
 

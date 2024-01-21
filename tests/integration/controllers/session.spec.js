@@ -3,8 +3,8 @@ import mongoose from 'mongoose';
 import { faker } from '@faker-js/faker';
 import bcryptjs from 'bcryptjs';
 
-import { app } from '../../../src/app';
-import { User } from '../../../src/repositories/user';
+import { app } from '../../../src/infra/http/app';
+import { User } from '../../../src/infra/repositories/user';
 import factory from '../../utils/factory';
 
 describe('Session controller', () => {

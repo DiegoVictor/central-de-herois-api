@@ -1,12 +1,12 @@
 import request from 'supertest';
 import Mongoose from 'mongoose';
 
-import { app } from '../../../src/app';
-import { Hero } from '../../../src/repositories/hero';
-import { Monster } from '../../../src/repositories/monster';
+import { app } from '../../../src/infra/http/app';
+import { Hero } from '../../../src/infra/repositories/hero';
+import { Monster } from '../../../src/infra/repositories/monster';
 import factory from '../../utils/factory';
 import jwtoken from '../../utils/jwtoken';
-import { HERO_STATUS_NAMED } from '../../../src/utils/constants';
+import { HERO_STATUS_NAMED } from '../../../src/entities/hero';
 
 let token;
 

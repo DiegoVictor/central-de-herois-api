@@ -1,11 +1,11 @@
 import request from 'supertest';
 import mongoose from 'mongoose';
 
-import { app } from '../../../src/app';
+import { app } from '../../../src/infra/http/app';
 import factory from '../../utils/factory';
 import jwtoken from '../../utils/jwtoken';
-import { Monster } from '../../../src/repositories/monster';
-import { MONSTER_STATUS_NAMED } from '../../../src/utils/constants';
+import { Monster } from '../../../src/infra/repositories/monster';
+import { MONSTER_STATUS_NAMED } from '../../../src/entities/monster';
 
 let token;
 
