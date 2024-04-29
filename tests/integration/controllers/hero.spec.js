@@ -88,7 +88,7 @@ describe('Hero controller', () => {
     const { name, status, rank, location, description } =
       await factory.attrs('Hero');
 
-    await hero.remove();
+    await Hero.deleteOne({ _id: hero._id });
 
     const { body } = await request(app)
       .put(`/heroes/${hero._id}`)
@@ -135,7 +135,7 @@ describe('Hero controller', () => {
   it('should not be able to delete an hero that not exists', async () => {
     const hero = await factory.create('Hero');
 
-    await hero.delete();
+    await Hero.deleteOne({ _id: hero._id });
 
     const { body } = await request(app)
       .delete(`/heroes/${hero._id}`)

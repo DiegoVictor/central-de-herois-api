@@ -51,7 +51,7 @@ describe('Defeated controller', () => {
     const monster = await factory.create('Monster', { heroes: [] });
     const hero = await factory.create('Hero', { status: 'fighting' });
 
-    await monster.delete();
+    await Monster.deleteOne({ _id: monster._id });
 
     const { body } = await request(app)
       .put(`/monsters/${monster._id}/defeated`)
@@ -75,7 +75,7 @@ describe('Defeated controller', () => {
     const monster = await factory.create('Monster', { heroes: [] });
     const hero = await factory.create('Hero', { status: 'fighting' });
 
-    await hero.delete();
+    await Hero.deleteOne({ _id: hero._id });
 
     const { body } = await request(app)
       .put(`/monsters/${monster._id}/defeated`)
