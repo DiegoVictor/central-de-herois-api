@@ -1,6 +1,6 @@
 # [API] Central de Heróis
 [![AppVeyor](https://img.shields.io/appveyor/build/diegovictor/central-de-herois-api?logo=appveyor&style=flat-square)](https://ci.appveyor.com/project/DiegoVictor/central-de-herois-api)
-[![mongoose](https://img.shields.io/badge/mongoose-5.13.3-green?style=flat-square&logo=mongo&logoColor=white)](https://mongoosejs.com/)
+[![mongoose](https://img.shields.io/badge/mongoose-8.3.3-green?style=flat-square&logo=mongo&logoColor=white)](https://mongoosejs.com/)
 [![eslint](https://img.shields.io/badge/eslint-8.55.0-4b32c3?style=flat-square&logo=eslint)](https://eslint.org/)
 [![airbnb-style](https://flat.badgen.net/badge/style-guide/airbnb/ff5a5f?icon=airbnb)](https://github.com/airbnb/javascript)
 [![jest](https://img.shields.io/badge/jest-29.7.0-brightgreen?style=flat-square&logo=jest)](https://jestjs.io/)
