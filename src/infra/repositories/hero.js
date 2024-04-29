@@ -111,4 +111,8 @@ export class HeroRepository {
       }
     );
   }
+
+  async deleteOneById(id) {
+    return Hero.deleteOne({ _id: id });
+  }
 }

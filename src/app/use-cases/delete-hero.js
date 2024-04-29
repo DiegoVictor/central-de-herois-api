@@ -12,7 +12,7 @@ export class DeleteHeroUseCase {
       return failure(404, 'Hero not found');
     }
 
-    await hero.remove();
+    await this.heroRepository.deleteOneById(id);
 
     return success(null, 204);
   }
