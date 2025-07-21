@@ -8,6 +8,7 @@ environment:
   MONSTER_WEBSOCKET: http://localhost:8080/central-de-herois/monstros
 install:
   - sh: npm ci
+build: off
 test_script:
   - sh: npm run test
 on_success:
